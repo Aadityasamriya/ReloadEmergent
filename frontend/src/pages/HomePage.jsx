@@ -81,13 +81,13 @@ const HomePage = () => {
     }, 2000);
   }, [url, toast]);
 
-  const handleDownload = async (format) => {
+  const handleDownload = useCallback(async (format) => {
     toast({
       title: 'Download Starting',
       description: `Preparing ${format.quality} download...`,
     });
 
-    const result = await mockDownload(format, extractedData.title);
+    const result = await mockDownload(format, extractedData?.title);
     
     if (result.success) {
       toast({
@@ -95,7 +95,7 @@ const HomePage = () => {
         description: result.message,
       });
     }
-  };
+  }, [extractedData, toast]);
 
   const clearHistory = () => {
     setHistory([]);
