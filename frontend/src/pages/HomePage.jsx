@@ -1,11 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { Input } from '../components/ui/input';
 import { Button } from '../components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../components/ui/card';
 import { Badge } from '../components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '../components/ui/tabs';
-import { Download, Link2, History, Loader2, Video, Music, Image as ImageIcon } from 'lucide-react';
-import { mockExtractedData, mockHistory, detectPlatform, mockDownload } from '../mock';
+import { Download, Link2, History, Loader2, Video } from 'lucide-react';
+import { mockExtractedData, detectPlatform, mockDownload } from '../mock';
 import { useToast } from '../hooks/use-toast';
 import VideoResult from '../components/VideoResult';
 import DownloadHistory from '../components/DownloadHistory';
