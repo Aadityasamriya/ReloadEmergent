@@ -104,19 +104,29 @@ const HomePageV2 = () => {
           </div>
         )}
         
-        <Tabs defaultValue="extract" className="w-full">
-          <TabsList className="grid w-full grid-cols-2 mb-8">
-            <TabsTrigger value="extract" className="flex items-center gap-2">
+        <div className="w-full">
+          <div className="grid w-full grid-cols-2 mb-8 gap-2">
+            <Button
+              type="button"
+              onClick={() => setActiveTab('extract')}
+              variant={activeTab === 'extract' ? 'default' : 'outline'}
+              className="flex items-center gap-2"
+            >
               <Video className="w-4 h-4" />
               Extract Media
-            </TabsTrigger>
-            <TabsTrigger value="history" className="flex items-center gap-2">
+            </Button>
+            <Button
+              type="button"
+              onClick={() => setActiveTab('history')}
+              variant={activeTab === 'history' ? 'default' : 'outline'}
+              className="flex items-center gap-2"
+            >
               <History className="w-4 h-4" />
               History
-            </TabsTrigger>
-          </TabsList>
+            </Button>
+          </div>
 
-          <TabsContent value="extract" className="space-y-6">
+          {activeTab === 'extract' && (<div className="space-y-6">
             <Card className="shadow-lg border-slate-200">
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
