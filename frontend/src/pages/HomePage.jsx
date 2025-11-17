@@ -97,14 +97,14 @@ const HomePage = () => {
     }
   }, [extractedData, toast]);
 
-  const clearHistory = () => {
+  const clearHistory = useCallback(() => {
     setHistory([]);
     localStorage.removeItem('downloadHistory');
     toast({
       title: 'History Cleared',
       description: 'Download history has been cleared',
     });
-  };
+  }, [toast]);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-slate-100">
