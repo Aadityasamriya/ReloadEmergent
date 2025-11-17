@@ -15,6 +15,7 @@ const HomePageV2 = () => {
   const [extractedData, setExtractedData] = useState(null);
   const [history, setHistory] = useState([]);
   const [message, setMessage] = useState('');
+  const [activeTab, setActiveTab] = useState('extract');
 
   useEffect(() => {
     const savedHistory = localStorage.getItem('downloadHistory');
