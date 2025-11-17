@@ -156,6 +156,7 @@ const HomePage = () => {
                     className="flex-1 h-12 text-base"
                   />
                   <Button
+                    type="button"
                     onClick={handleExtract}
                     disabled={loading}
                     className="h-12 px-6 bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700"
