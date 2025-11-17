@@ -24,7 +24,7 @@ const HomePageV2 = () => {
   }, []);
 
   const handleExtract = () => {
-    setMessage('');
+    setMessage('Button clicked! Processing...');
     
     if (!url.trim()) {
       setMessage('Please enter a valid video URL');
@@ -39,6 +39,7 @@ const HomePageV2 = () => {
     }
 
     setLoading(true);
+    setMessage('Extracting video information...');
     
     setTimeout(() => {
       const data = {
