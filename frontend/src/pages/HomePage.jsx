@@ -25,9 +25,7 @@ const HomePage = () => {
     }
   }, []);
 
-  const handleExtract = async () => {
-    console.log('Extract button clicked', url);
-    
+  const handleExtract = useCallback(() => {
     if (!url.trim()) {
       toast({
         title: 'URL Required',
@@ -38,7 +36,6 @@ const HomePage = () => {
     }
 
     const platform = detectPlatform(url);
-    console.log('Detected platform:', platform);
     
     if (platform === 'Unknown') {
       toast({
@@ -50,20 +47,16 @@ const HomePage = () => {
     }
 
     setLoading(true);
-    console.log('Loading set to true');
     
     // Mock API call
     setTimeout(() => {
-      console.log('Timeout callback executing');
       const data = {
         ...mockExtractedData,
         platform,
         url,
       };
-      console.log('Setting extracted data:', data);
       setExtractedData(data);
       setLoading(false);
-      console.log('Loading set to false');
       
       toast({
         title: 'Success!',
@@ -80,12 +73,13 @@ const HomePage = () => {
         thumbnail: data.thumbnail,
       };
       
-      const updatedHistory = [newHistoryItem, ...history].slice(0, 20);
-      setHistory(updatedHistory);
-      localStorage.setItem('downloadHistory', JSON.stringify(updatedHistory));
-      console.log('History updated');
+      setHistory((prevHistory) => {
+        const updatedHistory = [newHistoryItem, ...prevHistory].slice(0, 20);
+        localStorage.setItem('downloadHistory', JSON.stringify(updatedHistory));
+        return updatedHistory;
+      });
     }, 2000);
-  };
+  }, [url, toast]);
 
   const handleDownload = async (format) => {
     toast({
