@@ -183,18 +183,19 @@ const HomePageV2 = () => {
                 onDownload={handleDownload}
               />
             )}
-          </TabsContent>
+          </div>)}
 
-          <TabsContent value="history">
+          {activeTab === 'history' && (
             <DownloadHistory
               history={history}
               onClear={clearHistory}
               onSelect={(item) => {
                 setUrl(item.url);
+                setActiveTab('extract');
               }}
             />
-          </TabsContent>
-        </Tabs>
+          )}
+        </div>
       </main>
 
       <footer className="border-t mt-16 py-8 bg-white/50">
