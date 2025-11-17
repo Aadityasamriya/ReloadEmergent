@@ -2,6 +2,7 @@ import React from 'react';
 import './App.css';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import HomePage from './pages/HomePage';
+import TestPage from './pages/TestPage';
 import { Toaster } from './components/ui/toaster';
 
 function App() {
@@ -10,6 +11,7 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<HomePage />} />
+          <Route path="/test" element={<TestPage />} />
         </Routes>
       </BrowserRouter>
       <Toaster />
