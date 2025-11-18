@@ -14,7 +14,7 @@ from typing import Dict, Any
 BACKEND_URL = "https://video-grabber-79.preview.emergentagent.com/api"
 
 # Test YouTube URL (short video for faster testing)
-TEST_YOUTUBE_URL = "https://www.youtube.com/watch?v=jNQXAC9IVRw"
+TEST_YOUTUBE_URL = "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
 
 class BackendTester:
     def __init__(self):
