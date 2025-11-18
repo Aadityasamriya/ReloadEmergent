@@ -315,8 +315,10 @@ class BackendTester:
                 return False
             
             format_id = formats[0].get("format_id", "best")
+            # Use the URL from the extract data (the one that worked)
+            test_url = extract_data.get("data", {}).get("webpage_url", TEST_DAILYMOTION_URL)
             payload = {
-                "url": TEST_YOUTUBE_URL,
+                "url": test_url,
                 "format_id": format_id
             }
             
