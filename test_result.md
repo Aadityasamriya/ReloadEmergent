@@ -214,13 +214,11 @@ metadata:
 
 test_plan:
   current_focus:
-    - "Test backend extraction with real YouTube URL"
     - "Test frontend UI and API integration"
     - "Test quality selection and file size display"
-    - "Test download functionality"
     - "Test history localStorage"
   stuck_tasks: []
-  test_all: true
+  test_all: false
   test_priority: "high_first"
 
 agent_communication:
