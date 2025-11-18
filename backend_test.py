@@ -158,68 +158,56 @@ class BackendTester:
                     timeout=60  # Extended timeout for yt-dlp
                 )
             
-            if response.status_code == 200:
-                data = response.json()
-                
-                # Validate response structure
-                if not data.get("success"):
+                if response.status_code == 200:
+                    data = response.json()
+                    
+                    # Validate response structure
+                    if not data.get("success"):
+                        self.log(f"❌ {platform} extraction failed: success=false")
+                        continue
+                    
+                    # Check method used
+                    method = data.get("method")
+                    if method not in ["yt-dlp", "playwright", "beautifulsoup"]:
+                        self.log(f"❌ {platform} extraction failed: invalid method {method}")
+                        continue
+                    
+                    # Validate data structure
+                    video_data = data.get("data", {})
+                    required_fields = ["title", "platform", "formats"]
+                    missing_fields = [field for field in required_fields if field not in video_data]
+                    
+                    if missing_fields:
+                        self.log(f"❌ {platform} extraction failed: missing fields {missing_fields}")
+                        continue
+                    
+                    formats = video_data.get("formats", [])
+                    if not isinstance(formats, list) or len(formats) == 0:
+                        self.log(f"❌ {platform} extraction failed: no formats found")
+                        continue
+                    
+                    # Success!
                     self.results["extract_endpoint"] = {
-                        "status": "failed",
-                        "details": "Response success=false"
+                        "status": "passed",
+                        "details": f"Extraction successful with {platform} using {method}, found {len(formats)} formats"
                     }
-                    return None
-                
-                # Check method used
-                method = data.get("method")
-                if method not in ["yt-dlp", "playwright", "beautifulsoup"]:
-                    self.results["extract_endpoint"] = {
-                        "status": "failed",
-                        "details": f"Invalid extraction method: {method}"
-                    }
-                    return None
-                
-                # Validate data structure
-                video_data = data.get("data", {})
-                required_fields = ["title", "platform", "formats"]
-                missing_fields = [field for field in required_fields if field not in video_data]
-                
-                if missing_fields:
-                    self.results["extract_endpoint"] = {
-                        "status": "failed",
-                        "details": f"Missing data fields: {missing_fields}"
-                    }
-                    return None
-                
-                formats = video_data.get("formats", [])
-                if not isinstance(formats, list) or len(formats) == 0:
-                    self.results["extract_endpoint"] = {
-                        "status": "failed",
-                        "details": "No formats found in response"
-                    }
-                    return None
-                
-                self.results["extract_endpoint"] = {
-                    "status": "passed",
-                    "details": f"Extraction successful using {method}, found {len(formats)} formats"
-                }
-                self.log(f"✅ Extract endpoint passed - Method: {method}, Formats: {len(formats)}")
-                return data
-                
-            else:
-                self.results["extract_endpoint"] = {
-                    "status": "failed",
-                    "details": f"HTTP {response.status_code}: {response.text}"
-                }
-                self.log(f"❌ Extract endpoint failed: HTTP {response.status_code}", "ERROR")
-                return None
-                
-        except Exception as e:
-            self.results["extract_endpoint"] = {
-                "status": "failed",
-                "details": f"Request failed: {str(e)}"
-            }
-            self.log(f"❌ Extract endpoint failed: {str(e)}", "ERROR")
-            return None
+                    self.log(f"✅ Extract endpoint passed - Platform: {platform}, Method: {method}, Formats: {len(formats)}")
+                    return data
+                    
+                else:
+                    self.log(f"❌ {platform} extraction failed: HTTP {response.status_code}")
+                    continue
+                    
+            except Exception as e:
+                self.log(f"❌ {platform} extraction failed: {str(e)}", "ERROR")
+                continue
+        
+        # All URLs failed
+        self.results["extract_endpoint"] = {
+            "status": "failed",
+            "details": "All test URLs failed extraction"
+        }
+        return None
 
     def test_format_validation(self, extract_data: Dict[str, Any]) -> bool:
         """Validate format structure and content"""
