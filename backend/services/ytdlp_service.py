@@ -33,6 +33,17 @@ def get_video_info(url: str) -> Dict[str, Any]:
             'extract_flat': False,
             'format': 'best',
             'socket_timeout': 30,
+            'user_agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36',
+            'http_headers': {
+                'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
+                'Accept-Language': 'en-us,en;q=0.5',
+                'Accept-Encoding': 'gzip,deflate',
+                'Accept-Charset': 'ISO-8859-1,utf-8;q=0.7,*;q=0.7',
+                'Keep-Alive': '300',
+                'Connection': 'keep-alive',
+            },
+            'sleep_interval': 1,
+            'max_sleep_interval': 5,
         }
         
         with yt_dlp.YoutubeDL(ydl_opts) as ydl:
