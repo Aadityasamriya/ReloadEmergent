@@ -6,7 +6,7 @@ Detailed test to examine the exact response structure
 import requests
 import json
 
-BACKEND_URL = "https://video-grabber-79.preview.emergentagent.com/api"
+BACKEND_URL = "https://grabmedia-1.preview.emergentagent.com/api"
 TEST_URL = "https://www.dailymotion.com/video/x2jvvep"
 
 def test_detailed_extraction():

@@ -11,7 +11,7 @@ import sys
 from typing import Dict, Any
 
 # Backend URL from frontend/.env
-BACKEND_URL = "https://video-grabber-79.preview.emergentagent.com/api"
+BACKEND_URL = "https://grabmedia-1.preview.emergentagent.com/api"
 
 # Test URLs for different platforms
 TEST_YOUTUBE_URL = "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
