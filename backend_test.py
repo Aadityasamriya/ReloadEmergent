@@ -13,8 +13,10 @@ from typing import Dict, Any
 # Backend URL from frontend/.env
 BACKEND_URL = "https://video-grabber-79.preview.emergentagent.com/api"
 
-# Test YouTube URL (short video for faster testing)
+# Test URLs for different platforms
 TEST_YOUTUBE_URL = "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+TEST_VIMEO_URL = "https://vimeo.com/148751763"  # Short test video
+TEST_DAILYMOTION_URL = "https://www.dailymotion.com/video/x2jvvep"  # Alternative platform
 
 class BackendTester:
     def __init__(self):
