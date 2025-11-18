@@ -139,17 +139,24 @@ class BackendTester:
             return False
 
     def test_extract_endpoint(self) -> Dict[str, Any]:
-        """Test POST /api/extract endpoint with real YouTube URL"""
-        self.log(f"Testing extract endpoint with URL: {TEST_YOUTUBE_URL}")
-        self.log("⏳ This may take 10-30 seconds for yt-dlp extraction...")
+        """Test POST /api/extract endpoint with multiple URLs"""
+        test_urls = [
+            ("Vimeo", TEST_VIMEO_URL),
+            ("Dailymotion", TEST_DAILYMOTION_URL),
+            ("YouTube", TEST_YOUTUBE_URL)
+        ]
         
-        try:
-            payload = {"url": TEST_YOUTUBE_URL}
-            response = self.session.post(
-                f"{BACKEND_URL}/extract", 
-                json=payload, 
-                timeout=60  # Extended timeout for yt-dlp
-            )
+        for platform, url in test_urls:
+            self.log(f"Testing extract endpoint with {platform} URL: {url}")
+            self.log("⏳ This may take 10-30 seconds for yt-dlp extraction...")
+            
+            try:
+                payload = {"url": url}
+                response = self.session.post(
+                    f"{BACKEND_URL}/extract", 
+                    json=payload, 
+                    timeout=60  # Extended timeout for yt-dlp
+                )
             
             if response.status_code == 200:
                 data = response.json()
