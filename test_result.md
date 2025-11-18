@@ -123,6 +123,9 @@ backend:
       - working: true
         agent: "main"
         comment: "Implemented complete yt-dlp service with format detection, file size calculation, and quality sorting. Supports 1000+ platforms."
+      - working: true
+        agent: "testing"
+        comment: "✅ yt-dlp service working correctly. Successfully extracted video from Dailymotion with 3 formats (720p, 480p, 288p). Enhanced with proper user-agent and HTTP headers to avoid bot detection. YouTube currently blocked but service handles fallback gracefully. Format processing working: quality detection, file size calculation, type categorization (video/audio/video-only)."
 
   - task: "Playwright browser automation service"
     implemented: true
