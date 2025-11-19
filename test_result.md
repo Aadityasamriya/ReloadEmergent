@@ -282,9 +282,12 @@ metadata:
 
 test_plan:
   current_focus:
-    - "Test frontend UI and API integration"
-    - "Test quality selection and file size display"
-    - "Test history localStorage"
+    - "Test new Ultimate UI with dark theme"
+    - "Test subtitle extraction and display"
+    - "Test format conversion endpoints"
+    - "Test tabbed interface (video/audio/subtitles)"
+    - "Test platform icons and badges"
+    - "Test mobile responsiveness"
   stuck_tasks: []
   test_all: false
   test_priority: "high_first"
