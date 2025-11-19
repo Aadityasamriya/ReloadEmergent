@@ -277,6 +277,70 @@ class BackendTester:
         }
         return None
 
+    def test_subtitles_endpoint(self, extract_data: Dict[str, Any] = None) -> bool:
+        """Test POST /api/subtitles endpoint"""
+        self.log("Testing subtitles endpoint...")
+        
+        # Use the URL that worked for extraction, or fallback to test URLs
+        test_urls = []
+        if extract_data:
+            working_url = extract_data.get("data", {}).get("webpage_url")
+            if working_url:
+                test_urls.append(("Working URL", working_url))
+        
+        # Add test URLs from review request
+        test_urls.extend([
+            ("Dailymotion", "https://www.dailymotion.com/video/x8p6yh0"),
+            ("Vimeo", "https://vimeo.com/76979871")
+        ])
+        
+        for platform, url in test_urls:
+            self.log(f"Testing subtitles with {platform}: {url}")
+            
+            try:
+                payload = {"url": url}
+                response = self.session.post(
+                    f"{BACKEND_URL}/subtitles", 
+                    json=payload, 
+                    timeout=30
+                )
+                
+                if response.status_code == 200:
+                    data = response.json()
+                    
+                    if data.get("success"):
+                        subtitles_data = data.get("data", {})
+                        subtitles_list = subtitles_data.get("subtitles", [])
+                        
+                        # Subtitles may be empty (that's OK per review request)
+                        if isinstance(subtitles_list, list):
+                            self.results["subtitles_endpoint"] = {
+                                "status": "passed",
+                                "details": f"Subtitles endpoint working - found {len(subtitles_list)} subtitle tracks for {platform}"
+                            }
+                            self.log(f"✅ Subtitles endpoint passed - {len(subtitles_list)} tracks found")
+                            return True
+                        else:
+                            self.log(f"❌ {platform} subtitles failed: invalid response format")
+                            continue
+                    else:
+                        self.log(f"❌ {platform} subtitles failed: success=false")
+                        continue
+                else:
+                    self.log(f"❌ {platform} subtitles failed: HTTP {response.status_code}")
+                    continue
+                    
+            except Exception as e:
+                self.log(f"❌ {platform} subtitles failed: {str(e)}", "ERROR")
+                continue
+        
+        # All URLs failed
+        self.results["subtitles_endpoint"] = {
+            "status": "failed",
+            "details": "All test URLs failed subtitle extraction"
+        }
+        return False
+
     def test_format_validation(self, extract_data: Dict[str, Any]) -> bool:
         """Validate format structure and content"""
         if not extract_data:
