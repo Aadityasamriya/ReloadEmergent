@@ -493,7 +493,7 @@ class BackendTester:
 
     def run_all_tests(self):
         """Run all backend tests"""
-        self.log("🚀 Starting comprehensive backend API tests...")
+        self.log("🚀 Starting comprehensive backend API tests for ReloadTheGraphics v3.0...")
         self.log(f"Backend URL: {BACKEND_URL}")
         
         # Test 1: Health Check
@@ -502,14 +502,20 @@ class BackendTester:
         # Test 2: Root Endpoint
         root_ok = self.test_root_endpoint()
         
-        # Test 3: Extract Endpoint (PRIMARY TEST)
+        # Test 3: Formats Endpoint (NEW v3.0 feature)
+        formats_ok = self.test_formats_endpoint()
+        
+        # Test 4: Extract Endpoint (PRIMARY TEST)
         extract_data = self.test_extract_endpoint()
         extract_ok = extract_data is not None
         
-        # Test 4: Format Validation
+        # Test 5: Subtitles Endpoint (NEW v3.0 feature)
+        subtitles_ok = self.test_subtitles_endpoint(extract_data)
+        
+        # Test 6: Format Validation
         format_ok = self.test_format_validation(extract_data) if extract_ok else False
         
-        # Test 5: Download Endpoint
+        # Test 7: Download Endpoint
         download_ok = self.test_download_endpoint(extract_data) if extract_ok else False
         
         # Summary
@@ -518,7 +524,9 @@ class BackendTester:
         return {
             "health_check": health_ok,
             "root_endpoint": root_ok,
+            "formats_endpoint": formats_ok,
             "extract_endpoint": extract_ok,
+            "subtitles_endpoint": subtitles_ok,
             "format_validation": format_ok,
             "download_endpoint": download_ok
         }
