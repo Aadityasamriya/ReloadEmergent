@@ -23,7 +23,9 @@ class BackendTester:
         self.results = {
             "health_check": {"status": "pending", "details": ""},
             "root_endpoint": {"status": "pending", "details": ""},
+            "formats_endpoint": {"status": "pending", "details": ""},
             "extract_endpoint": {"status": "pending", "details": ""},
+            "subtitles_endpoint": {"status": "pending", "details": ""},
             "format_validation": {"status": "pending", "details": ""},
             "download_endpoint": {"status": "pending", "details": ""}
         }
