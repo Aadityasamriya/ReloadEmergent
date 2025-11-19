@@ -106,10 +106,14 @@ user_problem_statement: |
   Build the Ultimate Media Extraction Web App "ReloadTheGraphics" with:
   - Full video download functionality for 1000+ platforms (YouTube, Instagram, TikTok, Twitter, Facebook, etc.)
   - Multi-level extraction waterfall (yt-dlp, Playwright, BeautifulSoup)
-  - Premium UI with sophisticated design
+  - Premium UI with sophisticated design inspired by reference site
   - Quality selection with file sizes
+  - Subtitle download support
+  - Format conversion support (mp3, mp4, webm, aac, etc.)
   - No API keys required (ScrapingBee optional)
   - LocalStorage for history (no database)
+  - Mobile PWA support
+  - Dark theme with animations
 
 backend:
   - task: "yt-dlp service for video extraction"
