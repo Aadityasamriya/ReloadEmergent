@@ -158,11 +158,11 @@ class BackendTester:
                     }
                     return False
                 
-                formats_data = data.get("data", [])
-                if not isinstance(formats_data, list) or len(formats_data) == 0:
+                formats_data = data.get("data", {})
+                if not isinstance(formats_data, dict):
                     self.results["formats_endpoint"] = {
                         "status": "failed",
-                        "details": "No formats returned or invalid format"
+                        "details": "Invalid formats data structure"
                     }
                     return False
                 
@@ -170,11 +170,18 @@ class BackendTester:
                 expected_formats = ["mp3", "mp4", "webm", "aac", "ogg", "m4a", "3gp"]
                 found_formats = []
                 
-                for fmt in formats_data:
-                    if isinstance(fmt, dict) and "format" in fmt:
-                        found_formats.append(fmt["format"])
-                    elif isinstance(fmt, str):
-                        found_formats.append(fmt)
+                # Extract formats from the nested structure
+                formats_dict = formats_data.get("formats", {})
+                if isinstance(formats_dict, dict):
+                    found_formats = list(formats_dict.keys())
+                else:
+                    # Fallback: check if data is a list
+                    if isinstance(formats_data, list):
+                        for fmt in formats_data:
+                            if isinstance(fmt, dict) and "format" in fmt:
+                                found_formats.append(fmt["format"])
+                            elif isinstance(fmt, str):
+                                found_formats.append(fmt)
                 
                 missing_formats = [f for f in expected_formats if f not in found_formats]
                 
