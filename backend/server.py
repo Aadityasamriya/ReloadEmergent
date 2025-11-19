@@ -212,6 +212,62 @@ async def health_check():
     }
 
 
+@api_router.get("/formats")
+async def get_formats():
+    """Get list of supported conversion formats"""
+    try:
+        formats = get_supported_formats()
+        return JSONResponse(content={
+            "success": True,
+            "data": formats
+        })
+    except Exception as e:
+        logger.error(f"Failed to get formats: {str(e)}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@api_router.post("/convert")
+async def convert_video(request: dict):
+    """Convert video to specified format"""
+    try:
+        url = request.get('url')
+        output_format = request.get('format', 'mp4')
+        quality = request.get('quality', 'medium')
+        
+        if not url:
+            raise HTTPException(status_code=400, detail="URL is required")
+        
+        result = await convert_media(url, output_format, quality)
+        return JSONResponse(content={
+            "success": True,
+            "data": result
+        })
+    except Exception as e:
+        logger.error(f"Conversion failed: {str(e)}")
+        raise HTTPException(status_code=400, detail=str(e))
+
+
+@api_router.post("/subtitles")
+async def extract_subtitles(request: ExtractRequest):
+    """Extract subtitles from video"""
+    try:
+        url = request.url.strip()
+        
+        if not url:
+            raise HTTPException(status_code=400, detail="URL is required")
+        
+        logger.info(f"Extracting subtitles from: {url}")
+        result = get_subtitles(url)
+        
+        return JSONResponse(content={
+            "success": True,
+            "data": result
+        })
+    except Exception as e:
+        logger.error(f"Subtitle extraction failed: {str(e)}")
+        raise HTTPException(status_code=400, detail=str(e))
+
+
 # Include the router in the main app
 app.include_router(api_router)
 
