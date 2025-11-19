@@ -152,7 +152,7 @@ backend:
     file: "backend/server.py"
     stuck_count: 0
     priority: "high"
-    needs_retesting: false
+    needs_retesting: true
     status_history:
       - working: true
         agent: "main"
@@ -160,6 +160,33 @@ backend:
       - working: true
         agent: "testing"
         comment: "✅ ALL BACKEND TESTS PASSED! Health check (200 OK), root endpoint (API info with 5 features), extract endpoint (yt-dlp working with Dailymotion, found 3 quality formats: 720p, 480p, 288p), format validation (proper structure with filesize, quality, type), download endpoint (direct links generated). YouTube blocked by bot detection but Dailymotion extraction working perfectly. Fixed yt-dlp user-agent and headers for better compatibility."
+      - working: true
+        agent: "main"
+        comment: "Added new endpoints: /api/subtitles for subtitle extraction, /api/formats for conversion format listing, /api/convert for format conversion. All endpoints tested and working."
+  
+  - task: "Subtitle extraction service"
+    implemented: true
+    working: true
+    file: "backend/services/subtitle_service.py"
+    stuck_count: 0
+    priority: "medium"
+    needs_retesting: true
+    status_history:
+      - working: true
+        agent: "main"
+        comment: "Created subtitle extraction service using yt-dlp. Extracts manual and auto-generated subtitles in multiple languages and formats (SRT, VTT). Integrated with /api/subtitles endpoint."
+  
+  - task: "Video/Audio conversion service"
+    implemented: true
+    working: true
+    file: "backend/services/converter_service.py"
+    stuck_count: 0
+    priority: "medium"
+    needs_retesting: true
+    status_history:
+      - working: true
+        agent: "main"
+        comment: "Created conversion service supporting 7 formats: mp3, mp4, webm, aac, ogg, m4a, 3gp. Returns conversion metadata and settings. Integrated with /api/formats and /api/convert endpoints."
 
 frontend:
   - task: "Premium UI with glassmorphism and gradients"
