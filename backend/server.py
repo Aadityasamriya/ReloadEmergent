@@ -12,6 +12,8 @@ import asyncio
 # Import our services
 from services.ytdlp_service import get_video_info, get_direct_download_url
 from services.playwright_service import extract_with_playwright, scrape_with_beautifulsoup
+from services.converter_service import convert_media, get_supported_formats
+from services.subtitle_service import get_subtitles
 
 ROOT_DIR = Path(__file__).parent
 load_dotenv(ROOT_DIR / '.env')
