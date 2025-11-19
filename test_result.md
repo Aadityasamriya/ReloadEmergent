@@ -173,11 +173,14 @@ backend:
     file: "backend/services/subtitle_service.py"
     stuck_count: 0
     priority: "medium"
-    needs_retesting: true
+    needs_retesting: false
     status_history:
       - working: true
         agent: "main"
         comment: "Created subtitle extraction service using yt-dlp. Extracts manual and auto-generated subtitles in multiple languages and formats (SRT, VTT). Integrated with /api/subtitles endpoint."
+      - working: true
+        agent: "testing"
+        comment: "✅ Subtitle extraction service working correctly. /api/subtitles endpoint returns proper response structure with success=true. Tested with working Dailymotion URL - found 0 subtitle tracks (expected for this video). Service handles cases where subtitles are not available gracefully, which matches review request expectation that 'subtitles may return empty if not available (that's OK)'."
   
   - task: "Video/Audio conversion service"
     implemented: true
