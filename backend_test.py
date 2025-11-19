@@ -140,6 +140,72 @@ class BackendTester:
             self.log(f"❌ Root endpoint failed: {str(e)}", "ERROR")
             return False
 
+    def test_formats_endpoint(self) -> bool:
+        """Test GET /api/formats endpoint"""
+        self.log("Testing formats endpoint...")
+        
+        try:
+            response = self.session.get(f"{BACKEND_URL}/formats", timeout=10)
+            
+            if response.status_code == 200:
+                data = response.json()
+                
+                # Validate response structure
+                if not data.get("success"):
+                    self.results["formats_endpoint"] = {
+                        "status": "failed",
+                        "details": "Response success=false"
+                    }
+                    return False
+                
+                formats_data = data.get("data", [])
+                if not isinstance(formats_data, list) or len(formats_data) == 0:
+                    self.results["formats_endpoint"] = {
+                        "status": "failed",
+                        "details": "No formats returned or invalid format"
+                    }
+                    return False
+                
+                # Check for expected formats (mp3, mp4, webm, aac, ogg, m4a, 3gp)
+                expected_formats = ["mp3", "mp4", "webm", "aac", "ogg", "m4a", "3gp"]
+                found_formats = []
+                
+                for fmt in formats_data:
+                    if isinstance(fmt, dict) and "format" in fmt:
+                        found_formats.append(fmt["format"])
+                    elif isinstance(fmt, str):
+                        found_formats.append(fmt)
+                
+                missing_formats = [f for f in expected_formats if f not in found_formats]
+                
+                if len(found_formats) >= 7:  # Should have at least 7 formats
+                    self.results["formats_endpoint"] = {
+                        "status": "passed",
+                        "details": f"Found {len(found_formats)} conversion formats: {', '.join(found_formats[:7])}"
+                    }
+                    self.log(f"✅ Formats endpoint passed - {len(found_formats)} formats available")
+                    return True
+                else:
+                    self.results["formats_endpoint"] = {
+                        "status": "failed",
+                        "details": f"Expected 7+ formats, found {len(found_formats)}: {found_formats}"
+                    }
+                    return False
+            else:
+                self.results["formats_endpoint"] = {
+                    "status": "failed",
+                    "details": f"HTTP {response.status_code}: {response.text}"
+                }
+                return False
+                
+        except Exception as e:
+            self.results["formats_endpoint"] = {
+                "status": "failed",
+                "details": f"Request failed: {str(e)}"
+            }
+            self.log(f"❌ Formats endpoint failed: {str(e)}", "ERROR")
+            return False
+
     def test_extract_endpoint(self) -> Dict[str, Any]:
         """Test POST /api/extract endpoint with multiple URLs"""
         test_urls = [
